@@ -75,6 +75,85 @@ ros2 pkg list
 - `static_transform_publisher` 可以发布父子坐标系之间的固定变换。
 - `tf2_echo` 的参数顺序为目标坐标系在前、源坐标系在后。
 
+### RQT：模块化可视化工具
+
+### 1. RQT 的作用
+
+课程来源：古月居《ROS2 入门 21 讲》第 20 讲《RQT：模块化可视化工具》（11:11）。
+
+RQT 是基于 Qt 的模块化可视化工具。与使用 RViz 展示完整三维场景不同，RQT 可以根据需求加载不同插件，完成特定的可视化和调试任务。
+
+### 2. 安装与启动
+
+当前学习环境为 Ubuntu 24.04 ARM64 + ROS 2 Jazzy。课程使用 Humble，以下命令根据当前环境调整。
+
+```bash
+sudo apt update
+sudo apt install ros-jazzy-rqt
+source /opt/ros/jazzy/setup.bash
+rqt
+```
+
+### 3. 课程涉及的主要功能模块
+
+| 功能模块 | 主要用途 |
+|---|---|
+| 日志显示 | 查看 ROS 2 节点运行时产生的日志信息 |
+| 图像显示 | 单独显示摄像头等话题发布的图像 |
+| 发布话题数据 | 通过图形界面发布话题消息 |
+| 调用服务请求 | 通过图形界面发起服务调用 |
+| 绘制数据曲线 | 将数值型话题数据绘制成曲线，观察变化趋势 |
+| 数据包管理 | 配合 ROS 数据包记录与回放相关工作 |
+| 节点可视化 | 以图形方式观察节点之间的通信关系 |
+
+### 4. 常用插件启动命令
+
+```bash
+# RQT 主界面
+rqt
+
+# 节点与话题关系图
+ros2 run rqt_graph rqt_graph
+
+# 日志显示
+ros2 run rqt_console rqt_console
+
+# 图像显示
+ros2 run rqt_image_view rqt_image_view
+```
+
+部分插件需要额外安装：
+
+```bash
+sudo apt install ros-jazzy-rqt-common-plugins
+sudo apt install ros-jazzy-rqt-graph ros-jazzy-rqt-console ros-jazzy-rqt-image-view
+```
+
+### 5. RQT 与 RViz 的区别
+
+- **RQT**：模块化工具箱，按需加载插件，适合日志查看、图像显示、数据曲线和通信调试。
+- **RViz**：三维可视化工具，适合显示机器人模型、TF 坐标系和传感器数据。
+
+两者解决的问题不同，可以根据调试目标选择，也可以配合使用。
+
+### 6. 与 ROS 2 命令行配合
+
+```bash
+# 查看节点
+ros2 node list
+
+# 查看话题
+ros2 topic list
+
+# 查看话题类型及发布、订阅信息
+ros2 topic info /turtle1/pose
+
+# 查看节点的通信接口
+ros2 node info /turtlesim
+```
+
+CLI 用于精确查询系统状态，RQT 用于图形化观察和交互。排查问题时，可以先用 CLI 确认节点和话题，再使用对应的 RQT 插件辅助分析。
+
 ## 推荐的排查顺序
 
 1. 检查发行版与环境是否加载。
